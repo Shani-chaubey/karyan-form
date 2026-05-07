@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import CountdownTimer from "@/components/CountdownTimer";
 import RegistrationForm from "@/components/RegistrationForm";
 import { eventName, heroTagline, formCutoffDate } from "@/config/content";
@@ -91,6 +92,25 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10"
         >
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.05, duration: 0.45 }}
+            className="mx-auto mb-5 w-fit"
+          >
+            <div className="relative rounded-2xl border border-amber-200/80 bg-white/75 px-5 py-3 shadow-xl shadow-amber-900/10 backdrop-blur">
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-amber-100/60 to-transparent" />
+              <Image
+                src="/logo.webp"
+                alt="Karyan logo"
+                width={180}
+                height={72}
+                priority
+                className="relative h-12 sm:h-14 w-auto object-contain"
+              />
+            </div>
+          </motion.div>
+
           <motion.span
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -162,9 +182,9 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-xs text-amber-900/55 mt-6"
+          className="text-center text-base text-amber-900/55 mt-6"
         >
-          Your data is secure and will only be used for event coordination.
+          Important Note: Kindly ensure that all the information shared by you is accurate, as entry will be permitted strictly through barcode verification only.
         </motion.p>
       </div>
     </div>

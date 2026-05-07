@@ -75,7 +75,7 @@ export default function HomePage() {
   if (closed) return <ClosedScreen />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lux-ivory via-lux-cream/80 to-lux-cream relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-lux-ivory via-lux-cream/80 to-lux-cream relative overflow-x-hidden">
       {/* Decorative blobs */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-amber-300/30 rounded-full blur-3xl" />
@@ -83,7 +83,7 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-yellow-200/30 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-4 py-10 sm:py-16">
+      <div className="relative z-10 max-w-2xl mx-auto px-4 pt-10 pb-36 sm:pt-16 sm:pb-28">
         {/* Hero section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -149,7 +149,7 @@ export default function HomePage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="rounded-2xl bg-white/85 backdrop-blur-xl border border-amber-200 shadow-2xl shadow-amber-900/10 p-6 sm:p-8"
+          className="rounded-2xl bg-white/85 backdrop-blur-xl border border-amber-200 shadow-2xl shadow-amber-900/10 p-6 sm:p-8 overflow-visible"
         >
           <div className="mb-6">
             <h2 className="text-xl font-bold text-slate-900">Event Registration</h2>

@@ -345,7 +345,7 @@ export default function RegistrationForm() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.15 }}
               role="listbox"
-              className="absolute z-50 mt-1 w-full max-h-52 overflow-y-auto rounded-xl border border-amber-200 bg-lux-ivory/95 backdrop-blur-xl shadow-2xl shadow-amber-900/10"
+              className="absolute z-50 w-full max-h-52 overflow-y-auto rounded-xl border border-amber-200 bg-lux-ivory/95 backdrop-blur-xl shadow-2xl shadow-amber-900/10 top-full mt-1"
             >
               {filtered.length === 0 ? (
                 <li className="px-4 py-3 text-sm text-slate-500">No employees found</li>

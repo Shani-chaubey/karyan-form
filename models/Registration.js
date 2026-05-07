@@ -4,6 +4,13 @@ const RegistrationSchema = new mongoose.Schema({
   employeeId: { type: Number, required: true },
   employeeName: { type: String, required: true },
   channelPartnerName: { type: String, required: true },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address"],
+  },
   mobileNumber: {
     type: String,
     required: true,

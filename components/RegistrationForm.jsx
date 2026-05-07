@@ -6,11 +6,13 @@ import { employees } from "@/data/data";
 import { eventDate, successMessage } from "@/config/content";
 
 const PHONE_RE = /^[6-9]\d{9}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validate(fields) {
   const errors = {};
   if (!fields.employee) errors.employee = "Please select an employee.";
   if (!fields.channelPartnerName.trim()) errors.channelPartnerName = "Channel partner name is required.";
+  if (!EMAIL_RE.test(fields.email.trim())) errors.email = "Enter a valid email address.";
   if (!PHONE_RE.test(fields.mobileNumber)) errors.mobileNumber = "Enter a valid 10-digit mobile number starting with 6–9.";
   if (!PHONE_RE.test(fields.whatsappNumber)) errors.whatsappNumber = "Enter a valid 10-digit WhatsApp number starting with 6–9.";
   if (!fields.firmName.trim()) errors.firmName = "Firm name is required.";
@@ -47,9 +49,9 @@ function FloatingInput({ id, label, type = "text", value, onChange, onBlur, erro
         disabled={disabled}
         aria-describedby={error ? `${id}-error` : undefined}
         aria-invalid={!!error}
-        className={`peer w-full px-4 pt-5 pb-2 rounded-xl border bg-white/5 backdrop-blur-sm text-white placeholder-transparent focus:outline-none focus:ring-2 transition-all duration-200
-          ${error ? "border-red-400 focus:ring-red-400/50" : "border-white/20 focus:ring-purple-400/50 focus:border-purple-400"}
-          ${disabled ? "opacity-40 cursor-not-allowed" : "hover:border-white/40"}`}
+        className={`peer w-full px-4 pt-5 pb-2 rounded-xl border bg-white backdrop-blur-sm text-slate-900 placeholder-transparent focus:outline-none focus:ring-2 transition-all duration-200
+          ${error ? "border-orange-500 focus:ring-orange-400/40" : "border-amber-200 focus:ring-amber-400/40 focus:border-amber-400"}
+          ${disabled ? "opacity-50 cursor-not-allowed" : "hover:border-amber-300"}`}
         placeholder={label}
         {...rest}
       />
@@ -57,10 +59,10 @@ function FloatingInput({ id, label, type = "text", value, onChange, onBlur, erro
         htmlFor={id}
         className={`absolute left-4 text-sm transition-all duration-200 pointer-events-none
           ${hasValue || true
-            ? "top-1.5 text-xs text-purple-300"
-            : "top-3.5 text-white/50 peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-purple-300"
+            ? "top-1.5 text-xs text-slate-600"
+            : "top-3.5 text-slate-500 peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-slate-600"
           }
-          ${error ? "text-red-400" : ""}
+          ${error ? "text-orange-600" : ""}
           ${disabled ? "opacity-40" : ""}`}
       >
         {label}
@@ -74,7 +76,7 @@ function FloatingInput({ id, label, type = "text", value, onChange, onBlur, erro
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="mt-1 text-xs text-red-400 flex items-center gap-1"
+            className="mt-1 text-xs text-orange-600 flex items-center gap-1"
           >
             <span>⚠</span> {error}
           </motion.p>
@@ -131,7 +133,7 @@ function SuccessScreen() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="text-2xl font-bold text-white mb-3"
+        className="text-2xl font-bold text-amber-950 mb-3"
       >
         Registration Successful!
       </motion.h2>
@@ -139,7 +141,7 @@ function SuccessScreen() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.65 }}
-        className="text-purple-200 text-sm max-w-xs"
+        className="text-amber-900/80 text-sm max-w-xs"
       >
         {successMessage}
       </motion.p>
@@ -147,7 +149,7 @@ function SuccessScreen() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="mt-6 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-xs text-purple-200"
+        className="mt-6 px-4 py-2 rounded-full bg-white/80 border border-amber-200 text-xs text-amber-800"
       >
         📅 Event Date: {eventDate}
       </motion.div>
@@ -161,6 +163,7 @@ export default function RegistrationForm() {
   const [fields, setFields] = useState({
     employee: null,
     channelPartnerName: "",
+    email: "",
     mobileNumber: "",
     whatsappNumber: "",
     sameAsMobile: false,
@@ -185,6 +188,7 @@ export default function RegistrationForm() {
     const checks = [
       !!fields.employee,
       !!fields.channelPartnerName.trim(),
+      EMAIL_RE.test(fields.email.trim()),
       PHONE_RE.test(fields.mobileNumber),
       PHONE_RE.test(fields.whatsappNumber),
       !!fields.firmName.trim(),
@@ -194,7 +198,7 @@ export default function RegistrationForm() {
     return checks.filter(Boolean).length;
   }, [fields]);
 
-  const progress = Math.round((completedFields / 7) * 100);
+  const progress = Math.round((completedFields / 8) * 100);
 
   function setField(key, val) {
     setFields((f) => {
@@ -221,6 +225,7 @@ export default function RegistrationForm() {
     const allTouched = {
       employee: true,
       channelPartnerName: true,
+      email: true,
       mobileNumber: true,
       whatsappNumber: true,
       firmName: true,
@@ -243,6 +248,7 @@ export default function RegistrationForm() {
           employeeId: fields.employee.id,
           employeeName: fields.employee.name,
           channelPartnerName: fields.channelPartnerName,
+          email: fields.email.trim(),
           mobileNumber: fields.mobileNumber,
           whatsappNumber: fields.whatsappNumber,
           firmName: fields.firmName,
@@ -267,24 +273,25 @@ export default function RegistrationForm() {
 
   const formFields = [
     { key: "channelPartnerName", label: "Channel Partner Name", index: 0 },
-    { key: "mobileNumber", label: "Mobile Number", index: 1, inputMode: "numeric", maxLength: 10 },
-    { key: "whatsappNumber", label: "WhatsApp Number", index: 2, inputMode: "numeric", maxLength: 10 },
-    { key: "firmName", label: "Firm Name", index: 3 },
-    { key: "officeLocation", label: "Office Location", index: 4 },
-    { key: "place", label: "Place", index: 5 },
+    { key: "email", label: "Email", index: 1, type: "email", autoComplete: "email" },
+    { key: "mobileNumber", label: "Mobile Number", index: 2, inputMode: "numeric", maxLength: 10 },
+    { key: "whatsappNumber", label: "WhatsApp Number", index: 3, inputMode: "numeric", maxLength: 10 },
+    { key: "firmName", label: "Firm Name", index: 4 },
+    { key: "officeLocation", label: "Office Location", index: 5 },
+    { key: "place", label: "Place", index: 6 },
   ];
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
       {/* Progress bar */}
       <div className="space-y-1">
-        <div className="flex justify-between text-xs text-purple-300">
+        <div className="flex justify-between text-xs text-slate-700">
           <span>Form completion</span>
           <span>{progress}%</span>
         </div>
-        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+        <div className="h-1.5 bg-amber-200/60 rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full"
+            className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4 }}
           />
@@ -293,8 +300,8 @@ export default function RegistrationForm() {
 
       {/* Employee dropdown */}
       <div className="relative">
-        <label className="block text-xs text-purple-300 mb-1.5 font-medium" htmlFor="employee-search">
-          Employee Name <span className="text-red-400">*</span>
+        <label className="block text-xs text-slate-700 mb-1.5 font-medium" htmlFor="employee-search">
+          Employee Name <span className="text-orange-600">*</span>
         </label>
         <div className="relative">
           <input
@@ -320,12 +327,12 @@ export default function RegistrationForm() {
             aria-label="Search employee"
             aria-expanded={dropdownOpen}
             aria-haspopup="listbox"
-            className={`w-full px-4 py-3 rounded-xl border bg-white/5 backdrop-blur-sm text-white placeholder-white/30
+            className={`w-full px-4 py-3 rounded-xl border bg-white backdrop-blur-sm text-slate-900 placeholder-slate-500
               focus:outline-none focus:ring-2 transition-all duration-200
-              ${getError("employee") ? "border-red-400 focus:ring-red-400/50" : "border-white/20 focus:ring-purple-400/50 focus:border-purple-400"}
-              hover:border-white/40`}
+              ${getError("employee") ? "border-orange-500 focus:ring-orange-400/40" : "border-amber-200 focus:ring-amber-400/40 focus:border-amber-400"}
+              hover:border-amber-300`}
           />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
             {fields.employee ? "✓" : "▾"}
           </span>
         </div>
@@ -338,10 +345,10 @@ export default function RegistrationForm() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.15 }}
               role="listbox"
-              className="absolute z-50 mt-1 w-full max-h-52 overflow-y-auto rounded-xl border border-white/20 bg-indigo-950/90 backdrop-blur-xl shadow-2xl"
+              className="absolute z-50 mt-1 w-full max-h-52 overflow-y-auto rounded-xl border border-amber-200 bg-lux-ivory/95 backdrop-blur-xl shadow-2xl shadow-amber-900/10"
             >
               {filtered.length === 0 ? (
-                <li className="px-4 py-3 text-sm text-white/40">No employees found</li>
+                <li className="px-4 py-3 text-sm text-slate-500">No employees found</li>
               ) : (
                 filtered.map((emp) => (
                   <li
@@ -356,7 +363,7 @@ export default function RegistrationForm() {
                       setErrors((e) => ({ ...e, employee: undefined }));
                     }}
                     className={`px-4 py-2.5 text-sm cursor-pointer transition-colors
-                      ${fields.employee?.id === emp.id ? "bg-purple-600 text-white" : "text-white/80 hover:bg-white/10"}`}
+                      ${fields.employee?.id === emp.id ? "bg-orange-600 text-white" : "text-slate-800 hover:bg-orange-100/60"}`}
                   >
                     {emp.name}
                   </li>
@@ -374,7 +381,7 @@ export default function RegistrationForm() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="mt-1 text-xs text-red-400 flex items-center gap-1"
+              className="mt-1 text-xs text-orange-600 flex items-center gap-1"
             >
               <span>⚠</span> {getError("employee")}
             </motion.p>
@@ -406,7 +413,7 @@ export default function RegistrationForm() {
                       disabled={fields.sameAsMobile}
                       {...inputProps}
                     />
-                    <label className="flex items-center gap-2 cursor-pointer text-sm text-purple-200 select-none">
+                    <label className="flex items-center gap-2 cursor-pointer text-sm text-slate-700 select-none">
                       <input
                         type="checkbox"
                         checked={fields.sameAsMobile}
@@ -418,7 +425,7 @@ export default function RegistrationForm() {
                             whatsappNumber: checked ? f.mobileNumber : f.whatsappNumber,
                           }));
                         }}
-                        className="w-4 h-4 accent-purple-500"
+                        className="w-4 h-4 accent-amber-600"
                         aria-label="Same as mobile number"
                       />
                       Same as mobile number
@@ -447,18 +454,18 @@ export default function RegistrationForm() {
 
             {/* Event Date (read-only) */}
             <motion.div
-              custom={6}
+              custom={7}
               variants={fieldVariants}
               initial="hidden"
               animate="visible"
             >
-              <div className="relative flex items-center px-4 py-3 rounded-xl border border-white/20 bg-white/5">
-                <span className="mr-3 text-purple-300">📅</span>
+              <div className="relative flex items-center px-4 py-3 rounded-xl border border-amber-200 bg-white">
+                <span className="mr-3 text-amber-700">📅</span>
                 <div>
-                  <p className="text-xs text-purple-300 leading-none">Event Date</p>
-                  <p className="text-white font-medium mt-0.5">{eventDate}</p>
+                  <p className="text-xs text-amber-700 leading-none">Event Date</p>
+                  <p className="text-slate-900 font-medium mt-0.5">{eventDate}</p>
                 </div>
-                <span className="ml-auto text-xs text-white/30 bg-white/10 px-2 py-0.5 rounded-full">Fixed</span>
+                <span className="ml-auto text-xs text-slate-700 bg-orange-100 px-2 py-0.5 rounded-full">Fixed</span>
               </div>
             </motion.div>
 
@@ -470,7 +477,7 @@ export default function RegistrationForm() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   role="alert"
-                  className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-400/30 text-red-300 text-sm"
+                  className="px-4 py-3 rounded-xl bg-orange-50 border border-orange-300 text-orange-700 text-sm"
                 >
                   {serverError}
                 </motion.div>
@@ -479,7 +486,7 @@ export default function RegistrationForm() {
 
             {/* Submit */}
             <motion.div
-              custom={7}
+              custom={8}
               variants={fieldVariants}
               initial="hidden"
               animate="visible"
@@ -489,11 +496,11 @@ export default function RegistrationForm() {
                 disabled={submitting}
                 whileHover={{ scale: submitting ? 1 : 1.02 }}
                 whileTap={{ scale: submitting ? 1 : 0.98 }}
-                className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600
-                  hover:from-purple-500 hover:via-indigo-500 hover:to-blue-500
-                  focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-transparent
+                className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700
+                  hover:from-amber-500 hover:via-orange-500 hover:to-amber-600
+                  focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-transparent
                   disabled:opacity-70 disabled:cursor-not-allowed
-                  shadow-lg shadow-purple-500/25 transition-all duration-200 flex items-center justify-center gap-2"
+                  shadow-lg shadow-amber-700/25 transition-all duration-200 flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -517,7 +524,7 @@ export default function RegistrationForm() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center text-sm text-white/30 pt-2"
+          className="text-center text-sm text-slate-600 pt-2"
         >
           ↑ Select an employee to unlock the form
         </motion.p>

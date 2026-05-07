@@ -29,6 +29,7 @@ export async function GET(request) {
       "Employee ID": r.employeeId,
       "Employee Name": r.employeeName,
       "Channel Partner Name": r.channelPartnerName,
+      Email: r.email,
       "Mobile Number": r.mobileNumber,
       "WhatsApp Number": r.whatsappNumber,
       "Firm Name": r.firmName,

@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import Registration from "@/models/Registration";
 
 const PHONE_RE = /^[6-9]\d{9}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request) {
   try {
@@ -10,6 +11,7 @@ export async function POST(request) {
       employeeId,
       employeeName,
       channelPartnerName,
+      email,
       mobileNumber,
       whatsappNumber,
       firmName,
@@ -22,6 +24,7 @@ export async function POST(request) {
       !employeeId ||
       !employeeName ||
       !channelPartnerName ||
+      !email ||
       !mobileNumber ||
       !whatsappNumber ||
       !firmName ||
@@ -48,6 +51,13 @@ export async function POST(request) {
       );
     }
 
+    if (!EMAIL_RE.test(email)) {
+      return Response.json(
+        { success: false, message: "Invalid email address." },
+        { status: 400 }
+      );
+    }
+
     await connectDB();
 
     const existing = await Registration.findOne({ mobileNumber });
@@ -65,6 +75,7 @@ export async function POST(request) {
       employeeId,
       employeeName,
       channelPartnerName,
+      email,
       mobileNumber,
       whatsappNumber,
       firmName,

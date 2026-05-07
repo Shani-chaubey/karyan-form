@@ -9,6 +9,7 @@ const COLUMNS = [
   { key: "#", label: "#", width: "w-10" },
   { key: "employeeName", label: "Employee", width: "w-32" },
   { key: "channelPartnerName", label: "Channel Partner", width: "w-36" },
+  { key: "email", label: "Email", width: "w-44" },
   { key: "mobileNumber", label: "Mobile", width: "w-28" },
   { key: "whatsappNumber", label: "WhatsApp", width: "w-28" },
   { key: "firmName", label: "Firm", width: "w-32" },
@@ -136,6 +137,7 @@ export default function AdminTable({ data, token }) {
                   <td className="px-3 py-3 text-slate-400">{(page - 1) * PAGE_SIZE + i + 1}</td>
                   <td className="px-3 py-3 text-white font-medium">{row.employeeName}</td>
                   <td className="px-3 py-3 text-slate-300">{row.channelPartnerName}</td>
+                  <td className="px-3 py-3 text-slate-300">{row.email}</td>
                   <td className="px-3 py-3 text-slate-300 font-mono">{row.mobileNumber}</td>
                   <td className="px-3 py-3 text-slate-300 font-mono">{row.whatsappNumber}</td>
                   <td className="px-3 py-3 text-slate-300">{row.firmName}</td>

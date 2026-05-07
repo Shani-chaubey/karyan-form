@@ -8,6 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-lux-ivory: #fdf8f2;
+  --color-lux-cream: #f6ecdc;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

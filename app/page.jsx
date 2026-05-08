@@ -135,7 +135,7 @@ export default function HomePage() {
             transition={{ delay: 0.28, duration: 0.4 }}
             className="text-xl sm:text-2xl text-amber-800/90 font-medium mb-2"
           >
-            Studio & Residential
+            Studio & Luxury Residences
           </motion.p>
 
           <motion.p

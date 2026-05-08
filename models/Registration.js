@@ -14,7 +14,6 @@ const RegistrationSchema = new mongoose.Schema({
   mobileNumber: {
     type: String,
     required: true,
-    unique: true,
     match: [/^[6-9]\d{9}$/, "Invalid mobile number"],
   },
   whatsappNumber: {

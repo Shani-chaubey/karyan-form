@@ -60,17 +60,6 @@ export async function POST(request) {
 
     await connectDB();
 
-    const existing = await Registration.findOne({ mobileNumber });
-    if (existing) {
-      return Response.json(
-        {
-          success: false,
-          message: "This mobile number is already registered.",
-        },
-        { status: 409 }
-      );
-    }
-
     await Registration.create({
       employeeId,
       employeeName,
